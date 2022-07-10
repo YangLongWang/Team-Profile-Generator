@@ -1,0 +1,12 @@
+.card {
+    border: 1px solid red;
+    width: 200px;
+    height: 250px;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+

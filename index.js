@@ -1,4 +1,6 @@
 const inquirer = require('inquirer');
+const generatePage = require('./src/page-template.js');
+const fs = require('fs');
 
 const promptUser = () => {
     return inquirer.prompt([
@@ -57,11 +59,46 @@ const promptUser = () => {
     ]);
 };
 
-const promptEngineer = infoEngineerData => {
-    // if there's no 'projects' array property, create one
-    if (!infoEngineerData.engineer) {
-        infoEngineerData.engineer = [];
+const promptMenu = employeeData => {
+    if (!employeeData.engineers) {
+        employeeData.engineers = [];
+    }    
+    if (!employeeData.interns) {
+        employeeData.interns = [];
     }
+    console.log(employeeData);
+
+    console.log(`
+    ============
+    Menu Options
+    ============ 
+    `);
+
+    return inquirer.prompt(
+        [
+        {
+            type: 'rawlist',
+            name: 'role',
+            message: "what would you add next?",
+            choices: ['Engineer', 'Intern', 'Finish']
+        }
+    ])
+    .then(optionData => {
+        if (optionData.role === 'Engineer') {
+            return promptEngineer(employeeData)
+        } else if (optionData.role === 'Intern') {
+            return promptIntern(employeeData);
+            
+        } else {
+            console.log('finish, next is generated HTML');
+            return employeeData;
+
+        }    
+    });
+};
+
+// const promptEngineer = (infoEngineerData, employeeData) => {
+const promptEngineer = (employeeData) => {
 
     console.log(`
     ==============
@@ -69,7 +106,8 @@ const promptEngineer = infoEngineerData => {
     ==============  
     `);
 
-    return inquirer.prompt([
+    return inquirer.prompt(
+        [
         {
             type: 'input',
             name: 'name',
@@ -124,24 +162,20 @@ const promptEngineer = infoEngineerData => {
         }
     ])
     .then(engineerData => {
-        infoEngineerData.engineer.push(engineerData);
-        return promptMenu(infoEngineerData);
+        employeeData.engineers.push(engineerData);
+        return promptMenu(employeeData);
     })
 }
 
-const promptIntern = infoInternData => {
-    // if there's no 'projects' array property, create one
-    if (!infoInternData.intern) {
-        infoInternData.intern = [];
-    }
-
+const promptIntern = employeeData => {
     console.log(`
     ==============
     Add a Intern
     ==============  
     `);
 
-    return inquirer.prompt([
+    return inquirer.prompt(
+        [
         {
             type: 'input',
             name: 'name',
@@ -196,50 +230,59 @@ const promptIntern = infoInternData => {
         }
     ])
     .then(internData => {
-        infoInternData.intern.push(internData);
-        return promptMenu(infoInternData);
+        employeeData.interns.push(internData);
+        return promptMenu(employeeData);
     })
 }
 
-const promptMenu = () => {
-    console.log(`
-    ============
-    Menu Options
-    ============ 
-    `);
+const writeFileSync = fileContent => {
+    return new Promise((resolve, reject) => {
+        fs.writeFileSync('./dist/index.html', fileContent, err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'File created'
+            });
+        });
+    });
+};
 
-    return inquirer.prompt([
-        {
-            type: 'rawlist',
-            name: 'role',
-            message: "what would you add next?",
-            choices: ['Engineer', 'Intern', 'Finish']
-        }
-    ])
-    .then(choose)
-}
+// demo HTML code
+const sampleHtml = '<h1>This will be written to the file!</h1>'
 
-const choose = optionData => {
+writeFileSync(sampleHtml)
+    .then(successfulResponse => {
+        // this will run when we use `resolve()`
+        console.log(successfulResponse);
+    })
+    .catch(errorResponse => {
+        // this will run when we use `reject()`
+        console.log(errorResponse);
+    });
 
-    if (optionData.role === 'Engineer') {
-        console.log('next: engineer');
-        return promptEngineer;
-
-    } else if (optionData.role === 'Intern') {
-        console.log('next: intern');
-        return promptIntern;
-        
-    } else {
-        console.log('finish, next is generated HTML');
-    }    
-}
+const copyFile = () => {
+    return new Promise((resolve, reject) => {
+        fs.copyFile('./src/style.css', './dist/style.css', err => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true,
+                message: 'Style sheet copied successfully!'
+            });
+        });        
+    });
+};
 
 promptUser()
-    .then(promptMenu)
-    // .then(promptEngineer)
-    // .then(promptIntern)
-    // .then(choose)
-    .catch(err => {
-        console.log(err);
-    });
+    .then(managerInfo => promptMenu(managerInfo))
+    .then(employeeData => generatePage(employeeData))
+    .then(pageHTML => writeFileSync(pageHTML))
+    .then(() => copyFile())
+    .then(copyFileResponse => console.log(copyFileResponse))
+    .catch(err => console.log(err));
 
