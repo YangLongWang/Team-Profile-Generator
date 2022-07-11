@@ -66,7 +66,7 @@ const promptMenu = employeeData => {
     if (!employeeData.interns) {
         employeeData.interns = [];
     }
-    console.log(employeeData);
+    // console.log(employeeData);
 
     console.log(`
     ============
@@ -280,9 +280,23 @@ const copyFile = () => {
 
 promptUser()
     .then(managerInfo => promptMenu(managerInfo))
-    .then(employeeData => generatePage(employeeData))
+    // .then(employeeData => generatePage(employeeData))
+    .then(employeeData => generatePage(mockData))
     .then(pageHTML => writeFileSync(pageHTML))
     .then(() => copyFile())
     .then(copyFileResponse => console.log(copyFileResponse))
     .catch(err => console.log(err));
 
+
+const mockData = {
+    name: 'longyang',
+    id: '1',
+    email: '674901205@qq.com',
+    officeNumber: '1',
+    engineers: [
+        { name: 'lee', id: '2', email: 'lee@gmail.com', github: 'lee' },
+        { name: 'max', id: '3', email: 'max@gmail.com', github: 'max' },
+        { name: 'yang', id: '4', email: 'yang@qq.com', github: 'yang' }
+    ],
+    interns: [ { name: 'si', id: '6', email: 'si@gmail.com', school: 'brock' } ]        
+}

@@ -1,7 +1,23 @@
-.card {
-    border: 1px solid red;
-    width: 200px;
-    height: 250px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+header {
+    background-color: brown;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #fff;
+    text-align: center;
 }
 
 main {
@@ -10,3 +26,44 @@ main {
     justify-content: space-around;
 }
 
+.card {
+    /* border: 1px solid red; */
+    width: 200px;
+    height: 250px;
+    background-color: beige;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px;
+}
+
+.head {
+    background-color: aquamarine;
+    border-radius: 10px 10px 0 0;
+    text-align: left;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    margin: 5px; 
+    padding: 2px;
+}
+
+.name {
+    font-size: 30px;
+    margin: 5px 10px;
+}
+
+.role {
+    font-size: 20px;
+    margin: 0 10px 10px 10px;
+}
+
+.body {
+    /* background-color: bisque; */
+    margin: 10px;
+    padding: 5px;
+}
+
+.body p {
+    font-size: 16px;
+    margin: 2px;
+    padding: 5px;
+}
