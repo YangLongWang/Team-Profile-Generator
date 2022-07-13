@@ -1,13 +1,14 @@
 const Intern = require('../lib/Intern');
 
-// test('creates a intern object', () => {
-//     const intern = new Intern('Joey');
+test('creates a intern object', () => {
+    const intern = new Intern('Joey', 1, '123@gmail', 'Brock');
 
-//     expect(intern.name).toBe('Joey');
-//     expect(intern.id).toEqual(expect.any(Number));
-//     expect(intern.email).toEqual(expect.any(String));
-//     expect(intern.school).toEqual(expect.any(String));
-// })
+    expect(intern.name).toBe('Joey');
+    expect(intern.id).toEqual(expect.any(Number));
+    expect(intern.email).toEqual(expect.any(String));
+    expect(intern.school).toEqual(expect.any(String));
+    expect(intern.role).toBe('Intern');
+})
 
 test("gets intern's name", () => {
     const intern = new Intern('Joey');
@@ -39,17 +40,3 @@ test("gets intern's role", () => {
     expect(intern.getRole()).toEqual('Intern');
 })
 
-
-
-
-
-
-// name
-// id
-// email
-// getName()
-// getId()
-// getEmail()
-// school
-// getSchool()
-// getRole() // Overridden to return 'Intern '

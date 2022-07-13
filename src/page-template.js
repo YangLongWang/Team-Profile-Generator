@@ -1,3 +1,4 @@
+
 const generateEngineer = engineer => {
     return`
         <section class="card">
@@ -30,7 +31,7 @@ const generateIntern = intern => {
     `;
 }
 
-module.exports = templateData => {
+module.exports = ({manager, engineers, interns}) => {
     let page = `
 <!DOCTYPE html>
 <html lang="en">
@@ -51,24 +52,24 @@ module.exports = templateData => {
     let managerCard = `
         <section class="card">
             <section class="head">
-                <h2 class="name">${templateData.name}</h2>
+                <h2 class="name">${manager.name}</h2>
                 <h3 class="role"><i class="fa-solid fa-crown"></i> Manager</h3>
             </section>
             <section class="body">
-                <p class="id">ID: ${templateData.id}</p>
-                <p class="email">Email: <a href="mailto:${templateData.email}">${templateData.email}</a></p>
-                <p class="role-feature">Office Number: ${templateData.officeNumber}</p>
+                <p class="id">ID: ${manager.id}</p>
+                <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+                <p class="role-feature">Office Number: ${manager.officeNumber}</p>
             </section>
         </section>
     `;
 
     let engineerCards = '';
-    templateData.engineers.forEach(eng => {
+    engineers.forEach(eng => {
         engineerCards += generateEngineer(eng);
     } );
     
     let internCards = '';
-    templateData.interns.forEach(intern => {
+    interns.forEach(intern => {
         internCards += generateIntern(intern); 
     } );
 

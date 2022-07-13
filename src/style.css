@@ -27,7 +27,6 @@ main {
 }
 
 .card {
-    /* border: 1px solid red; */
     width: 200px;
     height: 250px;
     background-color: beige;
@@ -57,7 +56,6 @@ main {
 }
 
 .body {
-    /* background-color: bisque; */
     margin: 10px;
     padding: 5px;
 }

@@ -2,6 +2,8 @@
 
 ## Table of Contents 
 
+<details><summary>Index</summary>
+
 - [Overview](#overview)
   - [Description](#description)
   - [Installation](#installation)
@@ -15,6 +17,7 @@
   - [Built with](#built-with)
   - [What I learned](#what-i-learned)
 - [Author](#author)
+</details>
 
 ## Overview
 

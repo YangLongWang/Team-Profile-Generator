@@ -1,13 +1,14 @@
 const Manager = require('../lib/Manager');
 
-// test('creates a manager object', () => {
-//     const manager = new Manager('Joey');
+test('creates a manager object', () => {
+    const manager = new Manager('Joey', 1, '123@gmail.com', 1);
 
-//     expect(manager.name).toBe('Joey');
-//     expect(manager.id).toEqual(expect.any(Number));
-//     expect(manager.email).toEqual(expect.any(String));
-//     expect(manager.officeNumber).toEqual(expect.any(Number));
-// })
+    expect(manager.name).toBe('Joey');
+    expect(manager.id).toEqual(expect.any(Number));
+    expect(manager.email).toEqual(expect.any(String));
+    expect(manager.officeNumber).toEqual(expect.any(Number));
+    expect(manager.role).toBe('Manager');
+})
 
 test("gets manager's name", () => {
     const manager = new Manager('Joey');
@@ -39,16 +40,3 @@ test("gets manager's role", () => {
     expect(manager.getRole()).toEqual('Manager');
 })
 
-
-
-
-
-
-// name
-// id
-// email
-// getName()
-// getId()
-// getEmail()
-// officeNumber
-// getRole() // Overridden to return 'Manager'
