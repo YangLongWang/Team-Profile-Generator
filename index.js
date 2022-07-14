@@ -1,238 +1,26 @@
-const inquirer = require('inquirer');
-const generatePage = require('./src/page-template.js');
 const fs = require('fs');
+const Team = require('./lib/Team');
+const generatePage = require('./src/page-template.js');
 
-const promptUser = () => {
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: "What is manager's name? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a name!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: "Enter your ID number. (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter your ID!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: "What is your email address? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a email!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'officeNumber',
-            message: "What is your office number? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter your office number!');
-                    return false;
-                }
-            }
-        }
-    ]);
-};
+const team = new Team();
 
-const promptMenu = employeeData => {
-    if (!employeeData.engineers) {
-        employeeData.engineers = [];
-    }    
-    if (!employeeData.interns) {
-        employeeData.interns = [];
-    }
-    // console.log(employeeData);
+async function buildTeam() {
+    await team.buildManager();
+    let isContinue = true;
+    while (isContinue) {
+        const option = await team.buildMenu();
 
-    console.log(`
-    ============
-    Menu Options
-    ============ 
-    `);
+        if (option.role === 'Engineer') {
+            await team.buildEngineer();
 
-    return inquirer.prompt(
-        [
-        {
-            type: 'rawlist',
-            name: 'role',
-            message: "what would you add next?",
-            choices: ['Engineer', 'Intern', 'Finish']
-        }
-    ])
-    .then(optionData => {
-        if (optionData.role === 'Engineer') {
-            return promptEngineer(employeeData)
-        } else if (optionData.role === 'Intern') {
-            return promptIntern(employeeData);
-            
+        } else if (option.role === 'Intern') {
+            await team.buildIntern();
         } else {
             console.log('finish, next is generated HTML');
-            return employeeData;
-
-        }    
-    });
-};
-
-// const promptEngineer = (infoEngineerData, employeeData) => {
-const promptEngineer = (employeeData) => {
-
-    console.log(`
-    ==============
-    Add a Engineer
-    ==============  
-    `);
-
-    return inquirer.prompt(
-        [
-        {
-            type: 'input',
-            name: 'name',
-            message: "What is engineer's name? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a name!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: "Enter his/her ID number. (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter ID!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: "What is his/her email address? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a email!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'github',
-            message: 'What is his/her Github username? (Required)',
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter his/her Github username!');
-                    return false;
-                }
-            }
+            isContinue = false;
         }
-    ])
-    .then(engineerData => {
-        employeeData.engineers.push(engineerData);
-        return promptMenu(employeeData);
-    })
-}
-
-const promptIntern = employeeData => {
-    console.log(`
-    ==============
-    Add a Intern
-    ==============  
-    `);
-
-    return inquirer.prompt(
-        [
-        {
-            type: 'input',
-            name: 'name',
-            message: "What is intern's name? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a name!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'id',
-            message: "Enter his/her ID number. (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter ID!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'email',
-            message: "What is his/her email address? (Required)",
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a email!');
-                    return false;
-                }
-            }
-        },
-        {
-            type: 'input',
-            name: 'school',
-            message: 'What is his/her school? (Required)',
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter his/her school!');
-                    return false;
-                }
-            }
-        }
-    ])
-    .then(internData => {
-        employeeData.interns.push(internData);
-        return promptMenu(employeeData);
-    })
+        
+    }
 }
 
 const writeFileSync = fileContent => {
@@ -278,25 +66,11 @@ const copyFile = () => {
     });
 };
 
-promptUser()
-    .then(managerInfo => promptMenu(managerInfo))
-    // .then(employeeData => generatePage(employeeData))
-    .then(employeeData => generatePage(mockData))
+buildTeam()
+    .then(() => generatePage(team))
     .then(pageHTML => writeFileSync(pageHTML))
     .then(() => copyFile())
     .then(copyFileResponse => console.log(copyFileResponse))
     .catch(err => console.log(err));
-
-
-const mockData = {
-    name: 'longyang',
-    id: '1',
-    email: '674901205@qq.com',
-    officeNumber: '1',
-    engineers: [
-        { name: 'lee', id: '2', email: 'lee@gmail.com', github: 'lee' },
-        { name: 'max', id: '3', email: 'max@gmail.com', github: 'max' },
-        { name: 'yang', id: '4', email: 'yang@qq.com', github: 'yang' }
-    ],
-    interns: [ { name: 'si', id: '6', email: 'si@gmail.com', school: 'brock' } ]        
-}
+    
+    

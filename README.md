@@ -2,7 +2,8 @@
 
 ## Table of Contents 
 
-<details><summary>Index</summary>
+<details>
+<summary>Table of Contents</summary>
 
 - [Overview](#overview)
   - [Description](#description)
@@ -28,33 +29,34 @@ Taking in information about employees on a software engineering team and generat
 
 ### Installation
 
+Because this is a Node.js application that runs from a machine and not a browser, it can't be deployed to GitHub pages. If anyone ever wants to look at the application, you have to clone it to your own local machine and run it from there.
 
 
 ### Usage
 
-node index.js
+The application will be invoked by using the following command: node index.js
 
 ### Tests
 
-
+Clone it to your own local machine and enter node index.js in command line.
 
 ### The challenge
 
 Users should be able to:
 
-- 
+- enter any information about team's members based on the questions.
 
 ### Screenshot
 
-![](./assets/images/Professional-README-Generator.png)
+![](./assets/images/My%20Team%20-%20127.0.0.1.png)
 
 ### Video
 
-- Video link: [https://drive.google.com/file/d/1z8N8uxMNyLIEZSeYGOtwG6icuzZDdNsB/view](https://drive.google.com/file/d/1z8N8uxMNyLIEZSeYGOtwG6icuzZDdNsB/view)
+- Video link: [https://drive.google.com/file/d/1ieBvY-FPNoh9seR-HPol5hKcHn9PX5KO/view](https://drive.google.com/file/d/1ieBvY-FPNoh9seR-HPol5hKcHn9PX5KO/view)
 
 ### Links
 
-- Solution URL: [https://github.com/YangLongWang/Professional-README-Generator](https://github.com/YangLongWang/Professional-README-Generator)
+- Solution URL: [https://github.com/YangLongWang/Team-Profile-Generator](https://github.com/YangLongWang/Team-Profile-Generator)
 
 ## My process
 
@@ -64,11 +66,18 @@ Users should be able to:
 
 ### What I learned
 
-- 
+- setting test file
 
 To see how I add code snippets, see below:
 
 ```JS
+test('creates a employee object', () => {
+    const employee = new Employee('Joey', 1, '123@gmail.com');
+
+    expect(employee.name).toBe('Joey');
+    expect(employee.id).toEqual(expect.any(Number));
+    expect(employee.email).toEqual(expect.any(String));
+})
 
 ```
 
